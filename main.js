@@ -70,9 +70,15 @@ input.addEventListener("input", () => {
 });
 
 const fileInput = document.getElementById("file");
-const fileName = document.querySelector(".file-name");
-
+const fileName = document.querySelector(".fileName");
 fileInput.addEventListener("change", () => {
   fileName.textContent =
-    fileInput.files.length > 0 ? fileInput.files[0].name : "No files selected";
+    fileInput.files.length > 0 ? fileInput.files[0].name : "Choose file";
 });
+
+const dialog = document.getElementById("upload-dialog");
+
+const uploadBtn = document.getElementById("upload-btn");
+const cancelBtn = document.querySelector(".cancel-btn");
+cancelBtn.onclick = () => dialog.close();
+uploadBtn.onclick = () => dialog.showModal();
