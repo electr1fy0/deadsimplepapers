@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>vitpapers</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="main.js" defer></script>
+    </head>
+    <body>
+        <form action="upload-form">
+            <input type="file" id="file" hidden />
+            <label for="file" class="file-trigger">Choose file</label>
+            <span class="file-name">No file selected </span>
+            <button type="submit" id="upload-btn">Upload paper</button>
+        </form>
+        <main>
+            <h1>Dead Simple Papers</h1>
+            <h2>VIT Previous Year Papers without the noise.</h2>
+            <div id="search-area">
+                <form action="/search">
+                    <fieldset>
+                        <div class="search-bar-container">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width="16"
+                                height="16"
+                                color="#737373"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M17 17L21 21" />
+                                <path
+                                    d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
+                                />
+                            </svg>
+                            <input
+                                type="text"
+                                name="course"
+                                placeholder="Search courses..."
+                                id="search-bar"
+                            />
+                        </div>
+                    </fieldset>
+                </form>
+                <ol id="matched-courses">
+                    <li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="#737373"
+                            fill="none"
+                            stroke="#141B34"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M8 2V18" />
+                            <path
+                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
+                            />
+                            <path
+                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
+                            />
+                        </svg>
+                        <span>Data Structures and Algorithms</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="currentColor"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M18.5 12L4.99997 12" />
+                            <path
+                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
+                            />
+                        </svg>
+                    </li>
+
+                    <li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="#737373"
+                            fill="none"
+                            stroke="#141B34"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M8 2V18" />
+                            <path
+                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
+                            />
+                            <path
+                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
+                            />
+                        </svg>
+                        <span>Operating Systems</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="currentColor"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M18.5 12L4.99997 12" />
+                            <path
+                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
+                            />
+                        </svg>
+                    </li>
+                    <li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="#737373"
+                            fill="none"
+                            stroke="#141B34"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M8 2V18" />
+                            <path
+                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
+                            />
+                            <path
+                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
+                            />
+                        </svg>
+                        <span>Computer Networks</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="currentColor"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M18.5 12L4.99997 12" />
+                            <path
+                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
+                            />
+                        </svg>
+                    </li>
+                    <li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="#737373"
+                            fill="none"
+                            stroke="#141B34"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M8 2V18" />
+                            <path
+                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
+                            />
+                            <path
+                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
+                            />
+                        </svg>
+                        <div>Computer Architecture and Organization</div>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            color="currentColor"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M18.5 12L4.99997 12" />
+                            <path
+                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
+                            />
+                        </svg>
+                    </li>
+                </ol>
+            </div>
+        </main>
+    </body>
+</html>
