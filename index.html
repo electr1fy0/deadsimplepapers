@@ -1,246 +1,117 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>vitpapers</title>
-        <link rel="stylesheet" href="styles.css" />
-        <script src="main.js" defer></script>
-    </head>
-    <body>
-        <header>
-            <button type="submit" id="upload-btn">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="16"
-                    height="16"
-                    color="#FAFAFA"
-                    fill="none"
-                    stroke="#FAFAFA"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path
-                        d="M4 12L4 14.5442C4 17.7892 4 19.4117 4.88607 20.5107C5.06508 20.7327 5.26731 20.9349 5.48933 21.1139C6.58831 22 8.21082 22 11.4558 22C12.1614 22 12.5141 22 12.8372 21.886C12.9044 21.8623 12.9702 21.835 13.0345 21.8043C13.3436 21.6564 13.593 21.407 14.0919 20.9081L18.8284 16.1716C19.4065 15.5935 19.6955 15.3045 19.8478 14.9369C20 14.5694 20 14.1606 20 13.3431V10C20 6.22876 20 4.34315 18.8284 3.17157C17.6569 2 15.7712 2 12 2M13 21.5V21C13 18.1716 13 16.7574 13.8787 15.8787C14.7574 15 16.1716 15 19 15H19.5"
-                    />
-                    <path
-                        d="M10 5C9.41016 4.39316 7.84027 2 7 2C6.15973 2 4.58984 4.39316 4 5M7 3L7 10"
-                    /></svg
-                ><span>Upload Paper</span>
-            </button>
-        </header>
 
-        <dialog id="upload-dialog">
-            <form action="upload-form">
-                <input type="file" id="file" hidden />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>deadsimplepapers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="main.js" defer></script>
+</head>
 
-                <label for="file" class="file-trigger">Choose file</label>
-                <span class="fileName"></span>
-                <menu>
-                    <button class="cancel-btn">Cancel</button>
-                    <button class="confirm-btn">Upload</button>
-                </menu>
-            </form>
-        </dialog>
-        <main>
-            <h1>Dead Simple Papers</h1>
-            <h2>VIT Previous Year Papers without the noise.</h2>
-            <div id="search-area">
-                <form action="/search">
-                    <fieldset>
-                        <div class="search-bar-container">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width="16"
-                                height="16"
-                                color="#737373"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M17 17L21 21" />
-                                <path
-                                    d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
-                                />
-                            </svg>
-                            <input
-                                type="text"
-                                name="course"
-                                placeholder="Search courses..."
-                                id="search-bar"
-                            />
-                        </div>
-                    </fieldset>
-                </form>
-                <ol id="matched-courses">
-                    <li>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="#737373"
-                            fill="none"
-                            stroke="#141B34"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M8 2V18" />
-                            <path
-                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
-                            />
-                            <path
-                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
-                            />
-                        </svg>
-                        <span>Data Structures and Algorithms</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="currentColor"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M18.5 12L4.99997 12" />
-                            <path
-                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
-                            />
-                        </svg>
-                    </li>
+<body>
+    <header>
+        <!-- File Upload button -->
+        <button type="button" id="upload-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
+                <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" </svg>
+                    <span>Submit</span>
+        </button>
+        <!-- Dark Mode toggle -->
+        <button type="button" id="theme-toggle" title="Toggle theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="sun-icon">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                    d="M12 2V4M12 20V22M4 12H2M22 12H20M19.778 4.222L17.556 6.444M6.444 17.556L4.222 19.778M4.222 4.222L6.444 6.444M17.556 17.556L19.778 19.778" />
+            </svg>
+        </button>
+    </header>
 
-                    <li>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="#737373"
-                            fill="none"
-                            stroke="#141B34"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M8 2V18" />
-                            <path
-                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
-                            />
-                            <path
-                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
-                            />
-                        </svg>
-                        <span>Operating Systems</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="currentColor"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M18.5 12L4.99997 12" />
-                            <path
-                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
-                            />
-                        </svg>
-                    </li>
-                    <li>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="#737373"
-                            fill="none"
-                            stroke="#141B34"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M8 2V18" />
-                            <path
-                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
-                            />
-                            <path
-                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
-                            />
-                        </svg>
-                        <span>Computer Networks</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="currentColor"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M18.5 12L4.99997 12" />
-                            <path
-                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
-                            />
-                        </svg>
-                    </li>
-                    <li>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="#737373"
-                            fill="none"
-                            stroke="#141B34"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M8 2V18" />
-                            <path
-                                d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z"
-                            />
-                            <path
-                                d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22"
-                            />
-                        </svg>
-                        <div>Computer Architecture and Organization</div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            color="currentColor"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M18.5 12L4.99997 12" />
-                            <path
-                                d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6"
-                            />
-                        </svg>
-                    </li>
-                </ol>
+    <!-- Upload dialog -->
+    <dialog id="upload-dialog">
+        <span class="upload-guide">Upload a paper to contribute to me. PDFs and Images are
+            accepted. <br />
+            Your uploads will be analyzed before being shown here.
+        </span>
+
+        <form id="upload-form">
+            <div class="form-row">
+                <div class="form-group" style="flex: 2">
+                    <label for="course-name">Course Name</label>
+                    <input type="text" id="course-name" name="course" placeholder="e.g. Database Systems" required />
+                </div>
+                <div class="form-group" style="flex: 1">
+                    <label for="course-code">Code</label>
+                    <input type="text" id="course-code" name="code" placeholder="BCSE302L" />
+                </div>
             </div>
-        </main>
-    </body>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="semester_name">Semester</label>
+                    <select id="semester_name" name="semester_name">
+                        <option value="" selected>Select Semester</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exam-type">Exam</label>
+                    <select id="exam-type" name="type">
+                        <option value="" selected>Select Exam</option>
+                        <option value="fat">FAT</option>
+                        <option value="cat2">CAT 2</option>
+                        <option value="cat1">CAT 1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="slot">Slot</label>
+                    <input type="text" id="slot" name="slot" placeholder="e.g. A1" />
+                </div>
+            </div>
+
+            <input type="file" id="file" name="file" hidden required />
+            <label for="file" class="file-trigger">Select a file</label>
+            <span class="fileName"></span>
+
+            <menu>
+                <button type="button" class="cancel-btn">Cancel</button>
+                <button class="confirm-btn">Upload</button>
+            </menu>
+        </form>
+    </dialog>
+    <main>
+        <h1>Dead Simple Papers</h1>
+        <h2>VIT Previous Year Papers without the noise.</h2>
+        <div id="search-area">
+            <form action="/search">
+                <fieldset>
+                    <!-- Search Bar -->
+                    <div class="search-bar-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 17.5L22 22" />
+                            <path
+                                d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+                        </svg>
+                        <input type="text" name="course" placeholder="Search courses..." id="search-bar" />
+                    </div>
+                </fieldset>
+            </form>
+            <ol id="matched-courses"></ol>
+        </div>
+    </main>
+</body>
+
 </html>
