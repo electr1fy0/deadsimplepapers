@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dead Simple Papers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="course.css" />
+    <script src="course.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <button type="button" id="upload-btn">
+            <!-- File Upload -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
+                <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" />
+            </svg>
+            <span>Submit</span>
+        </button>
+        <button type="button" id="search-btn">
+            <!-- Search -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.5 17.5L22 22" />
+                <path
+                    d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+            </svg>
+            <span id="cmd-icon">Search</span>
+        </button>
+        <!-- Dark Mode -->
+        <button type="button" id="theme-toggle" title="Toggle theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                    d="M12 2V4M12 20V22M4 12H2M22 12H20M19.778 4.222L17.556 6.444M6.444 17.556L4.222 19.778M4.222 4.222L6.444 6.444M17.556 17.556L19.778 19.778" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Upload Dialog -->
+    <dialog id="upload-dialog">
+        <span class="upload-guide">Upload a paper to contribute to me. PDFs and Images are accepted. <br />
+            Your uploads will be analyzed before being shown here.
+        </span>
+
+        <form id="upload-form">
+            <div class="form-row">
+                <div class="form-group" style="flex: 2">
+                    <label for="course-name">Course Name</label>
+                    <input type="text" id="course-name" name="course" placeholder="e.g. Database Systems" required />
+                </div>
+                <div class="form-group" style="flex: 1">
+                    <label for="course-code-input">Code</label>
+                    <input type="text" id="course-code-input" name="code" placeholder="BCSE302L" required />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="semester_name">Semester</label>
+                    <select id="semester_name" name="semester_name">
+                        <option value="" selected>Select Semester</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exam-type">Exam</label>
+                    <select id="exam-type" name="type">
+                        <option value="" selected>Select Exam</option>
+                        <option value="fat">FAT</option>
+                        <option value="cat2">CAT 2</option>
+                        <option value="cat1">CAT 1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="slot">Slot</label>
+                    <input type="text" id="slot" name="slot" placeholder="e.g. A1" />
+                </div>
+            </div>
+
+            <input type="file" id="file" name="file" hidden required />
+            <label for="file" class="file-trigger">Select a file</label>
+            <span class="fileName"></span>
+
+            <menu>
+                <button type="button" class="cancel-btn">Cancel</button>
+                <button class="confirm-btn">Upload</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <!-- Command Palette -->
+    <dialog id="cmd-k-dialog">
+        <div id="search-area">
+            <form action="/search">
+                <fieldset>
+                    <div class="search-bar-container">
+                        <!-- Search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 17.5L22 22" />
+                            <path
+                                d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+                        </svg>
+                        <input type="text" name="course" placeholder="Search courses..." id="cmd-k-input" />
+                    </div>
+                </fieldset>
+            </form>
+            <ol id="cmd-k-results"></ol>
+        </div>
+    </dialog>
+
+    <main>
+        <a href="/" class="back-link">← Back</a>
+        <h1 id="course-title">Loading...</h1>
+        <h2 id="course-subtitle">Dead Simple Papers</h2>
+
+        <!-- Filters Section -->
+        <div class="filters">
+            <div class="filter-row">
+                <span class="filter-label">Type</span>
+                <div class="filter-chips">
+                    <label class="chip"><input type="checkbox" name="type" value="fat" /><span>FAT <small
+                                id="count-fat">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="type" value="cat2" /><span>CAT 2 <small
+                                id="count-cat2">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="type" value="cat1" /><span>CAT 1 <small
+                                id="count-cat1">0</small></span></label>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Semester</span>
+                <div class="filter-chips">
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024 <small
+                                id="count-2024">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2023" /><span>2023 <small
+                                id="count-2023">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2022" /><span>2022 <small
+                                id="count-2022">0</small></span></label>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Slot</span>
+                <div class="filter-chips filter-chips-wrap">
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="a1" /><span>A1 <small
+                                id="count-a1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="a2" /><span>A2 <small
+                                id="count-a2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="b1" /><span>B1 <small
+                                id="count-b1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="b2" /><span>B2 <small
+                                id="count-b2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="c1" /><span>C1 <small
+                                id="count-c1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="c2" /><span>C2 <small
+                                id="count-c2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="d1" /><span>D1 <small
+                                id="count-d1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="d2" /><span>D2 <small
+                                id="count-d2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="e1" /><span>E1 <small
+                                id="count-e1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="e2" /><span>E2 <small
+                                id="count-e2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="f1" /><span>F1 <small
+                                id="count-f1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="f2" /><span>F2 <small
+                                id="count-f2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="g1" /><span>G1 <small
+                                id="count-g1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="g2" /><span>G2 <small
+                                id="count-g2">0</small></span></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Papers List -->
+        <ol id="papers-list"></ol>
+    </main>
+</body>
+
+</html>
