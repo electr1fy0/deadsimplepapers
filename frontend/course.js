@@ -350,20 +350,10 @@ function initializeCommandPalette() {
     if (e.key === "Escape" && dialog.open) close();
   });
 
-  input.closest("form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const first = resultsContainer.querySelector("li");
-    if (first) first.click();
-  });
-
   dialog.addEventListener("click", (e) => {
-    const rect = dialog.getBoundingClientRect();
-    const isInDialog =
-      rect.top <= e.clientY &&
-      e.clientY <= rect.top + rect.height &&
-      rect.left <= e.clientX &&
-      e.clientX <= rect.left + rect.width;
-    if (!isInDialog) close();
+    if (e.target === dialog) {
+      close();
+    }
   });
 }
 
@@ -388,13 +378,9 @@ function initializeUploadDialog() {
   if (cancelBtn) cancelBtn.addEventListener("click", close);
 
   dialog.addEventListener("click", (e) => {
-    const rect = dialog.getBoundingClientRect();
-    const isInDialog =
-      rect.top <= e.clientY &&
-      e.clientY <= rect.top + rect.height &&
-      rect.left <= e.clientX &&
-      e.clientX <= rect.left + rect.width;
-    if (!isInDialog) close();
+    if (e.target === dialog) {
+      close();
+    }
   });
 
   if (fileInput && fileNameDisplay) {

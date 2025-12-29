@@ -129,13 +129,9 @@ function initializeUploadDialog() {
   if (cancelBtn) cancelBtn.addEventListener("click", close);
 
   dialog.addEventListener("click", (e) => {
-    const rect = dialog.getBoundingClientRect();
-    const isInDialog =
-      rect.top <= e.clientY &&
-      e.clientY <= rect.top + rect.height &&
-      rect.left <= e.clientX &&
-      e.clientX <= rect.left + rect.width;
-    if (!isInDialog) close();
+    if (e.target === dialog) {
+      close();
+    }
   });
 
   if (fileInput && fileNameDisplay) {
