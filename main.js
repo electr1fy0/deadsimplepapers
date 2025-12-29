@@ -1,84 +1,187 @@
-courses = [
-  "Data Structures and Algorithms",
-  "Operating Systems",
-  "Computer Networks",
-  "Computer Architecture and Organization",
-];
+document.addEventListener("DOMContentLoaded", () => {
+  initializeTheme();
+  initializeCourseList();
+  initializeUploadDialog();
+});
 
-function createListItem(text) {
+function initializeTheme() {
+  const currentTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const toggleBtn = document.getElementById("theme-toggle");
+
+  if (currentTheme === "dark" || (!currentTheme && prefersDark.matches)) {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const newTheme = document.body.classList.contains("dark-mode")
+        ? "dark"
+        : "light";
+      localStorage.setItem("theme", newTheme);
+    });
+  }
+}
+
+let allCourses = [];
+
+async function initializeCourseList() {
+  const searchInput = document.getElementById("search-bar");
+
+  await fetchCourses();
+
+  if (searchInput) {
+    searchInput.addEventListener("input", handleSearch);
+  }
+}
+
+async function fetchCourses() {
+  try {
+    const res = await fetch("http://localhost:8080/api/courses");
+    allCourses = await res.json();
+  } catch (err) {
+    console.error("Failed to fetch courses:", err);
+    const list = document.getElementById("matched-courses");
+    if (list) list.innerHTML = '<li class="error">Failed to load courses</li>';
+  }
+}
+
+function handleSearch(e) {
+  const query = e.target.value.toLowerCase();
+
+  if (!query) {
+    renderCourses(allCourses);
+    return;
+  }
+
+  const filtered = allCourses.filter(
+    (c) =>
+      c.course_title.toLowerCase().includes(query) ||
+      (c.course_code && c.course_code.toLowerCase().includes(query)),
+  );
+  renderCourses(filtered);
+}
+
+function renderCourses(courses) {
+  const list = document.getElementById("matched-courses");
+  if (!list) return;
+
+  list.innerHTML = "";
+  courses.forEach((course) => {
+    list.appendChild(createCourseListItem(course));
+  });
+}
+
+function createCourseListItem(course) {
   const li = document.createElement("li");
+  li.style.cursor = "pointer";
+
+  li.onclick = () => {
+    window.location.href = `/course.html?course_title=${encodeURIComponent(course.course_title)}`;
+  };
+
+  const codeTag = course.course_code
+    ? `<span class="course-code">${course.course_code}</span>`
+    : "";
 
   li.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 24 24"
-         width="16" height="16"
-         fill="none"
-         stroke="#141B34"
-         stroke-width="1.5"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-      <path d="M8 2V18" />
-      <path d="M20 22H6C4.89543 22 4 21.1046 4 20M4 20C4 18.8954 4.89543 18 6 18H20V6C20 4.11438 20 3.17157 19.4142 2.58579C18.8284 2 17.8856 2 16 2H10C7.17157 2 5.75736 2 4.87868 2.87868C4 3.75736 4 5.17157 4 8V20Z" />
-      <path d="M19.5 18C19.5 18 18.5 18.7628 18.5 20C18.5 21.2372 19.5 22 19.5 22" />
-    </svg>
-
-    <span>${text}</span>
-
-    <svg xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 24 24"
-         width="16" height="16"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="1.5"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-      <path d="M18.5 12L4.99997 12" />
-      <path d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6" />
-    </svg>
-  `;
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.5 16.9286V10C20.5 6.22876 20.5 4.34315 19.3284 3.17157C18.1569 2 16.2712 2 12.5 2H11.5C7.72876 2 5.84315 2 4.67157 3.17157C3.5 4.34315 3.5 6.22876 3.5 10V19.5" />
+            <path d="M20.5 17H6C4.61929 17 3.5 18.1193 3.5 19.5C3.5 20.8807 4.61929 22 6 22H20.5" />
+            <path d="M20.5 22C19.1193 22 18 20.8807 18 19.5C18 18.1193 19.1193 17 20.5 17" />
+        </svg>
+        <span class="course-name">${course.course_title}</span>
+        ${codeTag}
+        <small class="paper-count">${course.paper_count}</small>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" />
+        </svg>
+    `;
 
   return li;
 }
 
-input = document.getElementById("search-bar");
-list = document.getElementById("matched-courses");
+function initializeUploadDialog() {
+  const triggerBtn = document.getElementById("upload-btn");
+  const dialog = document.getElementById("upload-dialog");
+  const form = document.getElementById("upload-form");
+  const fileInput = document.getElementById("file");
+  const fileNameDisplay = document.querySelector(".fileName");
+  const cancelBtn = document.querySelector(".cancel-btn");
 
-list.innerHTML = "";
-input.addEventListener("input", () => {
-  const query = input.value.toLowerCase();
+  if (!dialog) return;
 
-  const currentItems = Array.from(list.children).map(
-    (li) => li.querySelector("span").textContent,
-  );
+  const open = () => dialog.showModal();
+  const close = () => {
+    dialog.close();
+    if (form) form.reset();
+    if (fileNameDisplay) fileNameDisplay.textContent = "";
+  };
 
-  courses.forEach((course) => {
-    const matches = course.toLowerCase().includes(query);
-    const alreadyShown = currentItems.includes(course);
+  if (triggerBtn) triggerBtn.addEventListener("click", open);
+  if (cancelBtn) cancelBtn.addEventListener("click", close);
 
-    if (matches && !alreadyShown) {
-      list.appendChild(createListItem(course));
-      console.log("match:", course);
-    }
-
-    if (!matches && alreadyShown) {
-      const itemToRemove = Array.from(list.children).find(
-        (li) => li.querySelector("span").textContent === course,
-      );
-      itemToRemove.remove();
-    }
+  dialog.addEventListener("click", (e) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      rect.top <= e.clientY &&
+      e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX &&
+      e.clientX <= rect.left + rect.width;
+    if (!isInDialog) close();
   });
-});
 
-const fileInput = document.getElementById("file");
-const fileName = document.querySelector(".fileName");
-fileInput.addEventListener("change", () => {
-  fileName.textContent =
-    fileInput.files.length > 0 ? fileInput.files[0].name : "Choose file";
-});
+  if (fileInput && fileNameDisplay) {
+    fileInput.addEventListener("change", () => {
+      fileNameDisplay.textContent =
+        fileInput.files.length > 0 ? fileInput.files[0].name : "";
+    });
+  }
 
-const dialog = document.getElementById("upload-dialog");
+  if (form) {
+    form.addEventListener("submit", (e) => handleUpload(e, form, close));
+  }
+}
 
-const uploadBtn = document.getElementById("upload-btn");
-const cancelBtn = document.querySelector(".cancel-btn");
-cancelBtn.onclick = () => dialog.close();
-uploadBtn.onclick = () => dialog.showModal();
+async function handleUpload(e, form, closeCallback) {
+  e.preventDefault();
+
+  const submitBtn = form.querySelector(".confirm-btn");
+  const originalText = submitBtn.textContent;
+  const formData = new FormData(form);
+
+  try {
+    submitBtn.textContent = "Processing...";
+    submitBtn.disabled = true;
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+
+    if (res.ok) {
+      alert(data?.message || "Upload successful!");
+      closeCallback();
+      fetchCourses();
+    } else {
+      alert("Upload failed: " + (data?.message || text));
+    }
+  } catch (err) {
+    console.error("Upload error:", err);
+    alert("Error: " + err.message);
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+}

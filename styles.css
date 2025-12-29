@@ -68,7 +68,7 @@ h2 {
     padding: 0;
 }
 
-li > svg {
+li>svg {
     color: var(--text-primary);
     stroke: var(--text-primary);
     margin-right: 6px;
@@ -111,7 +111,7 @@ li {
     }
 }
 
-li > :last-child {
+li> :last-child {
     margin-left: auto;
 }
 
@@ -152,7 +152,6 @@ form {
     border: none;
     font-size: 14px;
     font-weight: 400;
-    user-select: none;
     padding: 0px 0px;
     color: var(--text-primary);
 }
@@ -183,8 +182,6 @@ form {
 
 fieldset {
     border-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 #upload-dialog {
@@ -377,4 +374,44 @@ dialog {
     text-align: center;
     margin-bottom: 12px;
     min-height: 18px;
+}
+
+#matched-courses {
+    margin-top: 16px;
+}
+
+.course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.course-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.course-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--hover-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.paper-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-right: 4px;
 }

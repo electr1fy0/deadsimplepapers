@@ -49,7 +49,7 @@
 
     <!-- Upload Dialog -->
     <dialog id="upload-dialog">
-        <span class="upload-guide">Upload a paper to contribute to me. PDFs and Images are accepted. <br />
+        <span class="upload-guide">Contribute a paper and help the community. PDFs and Images are accepted.<br />
             Your uploads will be analyzed before being shown here.
         </span>
 
@@ -60,29 +60,45 @@
                     <input type="text" id="course-name" name="course" placeholder="e.g. Database Systems" required />
                 </div>
                 <div class="form-group" style="flex: 1">
-                    <label for="course-code-input">Code</label>
-                    <input type="text" id="course-code-input" name="code" placeholder="BCSE302L" required />
+                    <label for="course-code">Code</label>
+                    <input type="text" id="course-code" name="code" placeholder="e.g BCSE302L" />
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="semester_name">Semester</label>
-                    <select id="semester_name" name="semester_name">
-                        <option value="" selected>Select Semester</option>
+                    <label for="year">Year</label>
+                    <select id="year" name="year">
+                        <option value="" selected>Select Year</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
                         <option value="2024">2024</option>
                         <option value="2023">2023</option>
                         <option value="2022">2022</option>
                         <option value="2021">2021</option>
                     </select>
                 </div>
+
+
+                <div class="form-group">
+                    <label for="semester_name">Semester</label>
+                    <select id="semester_name" name="semester_name">
+                        <option value="" selected>Select Semester</option>
+                        <option value="Fallsem">Fall</option>
+                        <option value="Wintersem">Winter</option>
+                        <option value="Summersem">Summer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
                 <div class="form-group">
                     <label for="exam-type">Exam</label>
                     <select id="exam-type" name="type">
                         <option value="" selected>Select Exam</option>
-                        <option value="fat">FAT</option>
-                        <option value="cat2">CAT 2</option>
                         <option value="cat1">CAT 1</option>
+                        <option value="cat2">CAT 2</option>
+                        <option value="fat">FAT</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -133,30 +149,42 @@
             <div class="filter-row">
                 <span class="filter-label">Type</span>
                 <div class="filter-chips">
-                    <label class="chip"><input type="checkbox" name="type" value="fat" /><span>FAT <small
-                                id="count-fat">0</small></span></label>
-                    <label class="chip"><input type="checkbox" name="type" value="cat2" /><span>CAT 2 <small
-                                id="count-cat2">0</small></span></label>
                     <label class="chip"><input type="checkbox" name="type" value="cat1" /><span>CAT 1 <small
                                 id="count-cat1">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="type" value="cat2" /><span>CAT 2 <small
+                                id="count-cat2">0</small></span></label>
+
+                    <label class="chip"><input type="checkbox" name="type" value="fat" /><span>FAT <small
+                                id="count-fat">0</small></span></label>
                 </div>
             </div>
             <div class="filter-row">
                 <span class="filter-label">Semester</span>
                 <div class="filter-chips">
-                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024 <small
+                    <label class="chip">
+                        <input type="checkbox" name="semester_name" value="2026" /><span>2026-27
+                            <small id="count-2026">0</small></span></label>
+                    <label class="chip">
+                        <input type="checkbox" name="semester_name" value="2025" /><span>2025-26
+                            <small id="count-2025">0</small></span></label>
+
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
                                 id="count-2024">0</small></span></label>
-                    <label class="chip"><input type="checkbox" name="semester_name" value="2023" /><span>2023 <small
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
+                                id="count-2024">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2023" /><span>2023-24 <small
                                 id="count-2023">0</small></span></label>
-                    <label class="chip"><input type="checkbox" name="semester_name" value="2022" /><span>2022 <small
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2022" /><span>2022-23 <small
                                 id="count-2022">0</small></span></label>
                 </div>
             </div>
             <div class="filter-row">
                 <span class="filter-label">Slot</span>
                 <div class="filter-chips filter-chips-wrap">
-                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="a1" /><span>A1 <small
-                                id="count-a1">0</small></span></label>
+                    <label class="chip chip-sm">
+                        <input type="checkbox" name="slot" value="a1" />
+                        <span>A1 <small id="count-a1">0</small></span>
+                    </label>
                     <label class="chip chip-sm"><input type="checkbox" name="slot" value="a2" /><span>A2 <small
                                 id="count-a2">0</small></span></label>
                     <label class="chip chip-sm"><input type="checkbox" name="slot" value="b1" /><span>B1 <small
