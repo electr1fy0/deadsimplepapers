@@ -90,7 +90,7 @@ function renderPapers() {
   const filtered = allPapers.filter((paper) => {
     const typeMatch =
       filters.type.length === 0 ||
-      filters.type.includes(paper.type.toLowerCase());
+      filters.type.includes(paper.exam_type.toLowerCase());
     const yearMatch =
       filters.semester_name.length === 0 ||
       filters.semester_name.includes(paper.semester_name);
@@ -416,7 +416,7 @@ function initializeUploadDialog() {
           alert(data?.message || "Upload successful!");
           close();
           const urlParams = new URLSearchParams(window.location.search);
-          fetchPapers(urlParams.get("course") || "");
+          fetchPapers(urlParams.get("course_title") || "");
         } else {
           alert("Upload failed: " + (data?.message || text));
         }

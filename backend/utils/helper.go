@@ -118,8 +118,11 @@ func BuildSupabaseQueryURL(baseURL string, params url.Values) (string, error) {
 		queryParams = append(queryParams, fmt.Sprintf("semester_name=eq.%s", url.QueryEscape(semesterName)))
 	}
 
-	if t := params.Get("type"); t != "" {
-		queryParams = append(queryParams, fmt.Sprintf("type=eq.%s", url.QueryEscape(t)))
+	if year := params.Get("year"); year != "" {
+		queryParams = append(queryParams, fmt.Sprintf("year=eq.%s", url.QueryEscape(year)))
+	}
+	if t := params.Get("exam_type"); t != "" {
+		queryParams = append(queryParams, fmt.Sprintf("exam_type=eq.%s", url.QueryEscape(t)))
 	}
 
 	if slot := params.Get("slot"); slot != "" {
