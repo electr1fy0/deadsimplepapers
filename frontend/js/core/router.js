@@ -1,5 +1,6 @@
 import { renderHome } from "../pages/home.js";
 import { renderCourse } from "../pages/course.js";
+import { initializeTheme } from "../state/theme.js";
 
 const routes = {
   "/": renderHome,
@@ -15,6 +16,7 @@ export function route() {
   const path = window.location.pathname;
   const render = routes[path] || routes["/"];
   render();
+  initializeTheme();
 }
 
 window.addEventListener("popstate", () => {

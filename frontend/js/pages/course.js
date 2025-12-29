@@ -1,8 +1,6 @@
 import { navigate } from "../core/router.js";
-import { initializeTheme } from "../state/theme.js";
 import { renderDialog } from "../components/dialog.js";
-
-const API_BASE = window.APP_CONFIG.API_BASE;
+import { API_BASE } from "../core/config.js";
 
 function formatYear(year) {
   const y = parseInt(year, 10);
@@ -276,11 +274,11 @@ function initializeCommandPalette() {
     resultsContainer.innerHTML = "";
     const filtered = query
       ? courses.filter(
-          (c) =>
-            c.course_title.toLowerCase().includes(query.toLowerCase()) ||
-            (c.course_code &&
-              c.course_code.toLowerCase().includes(query.toLowerCase())),
-        )
+        (c) =>
+          c.course_title.toLowerCase().includes(query.toLowerCase()) ||
+          (c.course_code &&
+            c.course_code.toLowerCase().includes(query.toLowerCase())),
+      )
       : courses;
 
     filtered.forEach((course) => {
@@ -389,7 +387,7 @@ function initializeUploadDialog() {
         let data;
         try {
           data = JSON.parse(text);
-        } catch {}
+        } catch { }
 
         if (res.ok) {
           alert(data?.message || "Upload successful!");
@@ -413,6 +411,7 @@ export function renderCourse() {
   app = document.getElementById("app");
 
   app.innerHTML = `
+    <div class="course-page">
     <header>
         <button type="button" id="upload-btn">
             <!-- File Upload -->
@@ -549,6 +548,7 @@ export function renderCourse() {
         <!-- Papers List -->
         <ol id="papers-list"></ol>
         </div>
+    </div>
     `;
 
   const backLink = document.querySelector("#backlink");
@@ -563,5 +563,4 @@ export function renderCourse() {
   initializeCommandPalette();
   initializeUploadDialog();
   renderDialog();
-  initializeTheme();
 }

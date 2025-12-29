@@ -1,8 +1,6 @@
 import { renderDialog } from "../components/dialog.js";
 import { navigate } from "../core/router.js";
-import { initializeTheme } from "../state/theme.js";
-
-const API_BASE = window.APP_CONFIG.API_BASE;
+import { API_BASE } from "../core/config.js";
 
 let allCourses = [];
 
@@ -222,5 +220,4 @@ export function renderHome() {
   initializeCourseList();
   initializeUploadDialog();
   renderDialog();
-  initializeTheme();
 }
