@@ -3,3 +3,5 @@ handlers/
 node_modules/
 frontend/dist/js/*
 .env*.local
+.vercel
+.env*.local
