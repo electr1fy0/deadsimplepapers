@@ -1,3 +1,5 @@
+const API_BASE = window.APP_CONFIG.API_BASE;
+
 document.addEventListener("DOMContentLoaded", () => {
   initializeTheme();
   initializePapers();
@@ -57,7 +59,7 @@ async function fetchPapers(course = "") {
   const papersList = document.getElementById("papers-list");
 
   try {
-    let url = "/api/papers";
+    let url = `${API_BASE}/papers`;
     if (course) url += `?course_title=${encodeURIComponent(course)}`;
 
     const res = await fetch(url);
@@ -153,7 +155,7 @@ function createPaperListItem(paper, index) {
             <span class="paper-tag paper-tag-exam">${paper.type.toUpperCase()}</span>
             <span class="paper-tag">${formatYear(paper.semester_name)}</span>
         </div>
-        <a href="/api/download?filename=${encodeURIComponent(paper.filename)}" download class="download-btn" title="Download" onclick="event.stopPropagation()">
+        <a href="${API_BASE}/download?filename=${encodeURIComponent(paper.filename)}" download class="download-btn" title="Download" onclick="event.stopPropagation()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 14.5L12 4.5M12 14.5C11.2998 14.5 9.99153 12.5057 9.5 12M12 14.5C12.7002 14.5 14.0085 12.5057 14.5 12" />
                 <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" />
@@ -178,7 +180,7 @@ function createPaperListItem(paper, index) {
 
   li.onclick = () => {
     window.open(
-      `/api/download?filename=${encodeURIComponent(paper.filename)}`,
+      `${API_BASE}/download?filename=${encodeURIComponent(paper.filename)}`,
       "_blank",
     );
   };
@@ -276,7 +278,7 @@ function initializeCommandPalette() {
 
   let courses = [];
 
-  fetch("/api/courses")
+  fetch(`${API_BASE}/courses`)
     .then((res) => res.json())
     .then((data) => {
       courses = data;
@@ -411,7 +413,7 @@ function initializeUploadDialog() {
         submitBtn.textContent = "Processing...";
         submitBtn.disabled = true;
 
-        const res = await fetch("/api/upload", {
+        const res = await fetch(`${API_BASE}/upload`, {
           method: "POST",
           body: formData,
         });

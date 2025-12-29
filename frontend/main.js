@@ -1,3 +1,5 @@
+const API_BASE = window.APP_CONFIG.API_BASE;
+
 document.addEventListener("DOMContentLoaded", () => {
   initializeTheme();
   initializeCourseList();
@@ -40,8 +42,9 @@ async function initializeCourseList() {
 
 async function fetchCourses() {
   try {
-    const res = await fetch("http://localhost:8080/api/courses");
+    const res = await fetch(`${API_BASE}/courses`);
     allCourses = await res.json();
+    renderCourses(allCourses);
   } catch (err) {
     console.error("Failed to fetch courses:", err);
     const list = document.getElementById("matched-courses");
@@ -80,7 +83,7 @@ function createCourseListItem(course) {
   li.style.cursor = "pointer";
 
   li.onclick = () => {
-    window.location.href = `/course.html?course_title=${encodeURIComponent(course.course_title)}`;
+    window.location.href = `./course.html?course_title=${encodeURIComponent(course.course_title)}`;
   };
 
   const codeTag = course.course_code
@@ -157,7 +160,7 @@ async function handleUpload(e, form, closeCallback) {
     submitBtn.textContent = "Processing...";
     submitBtn.disabled = true;
 
-    const res = await fetch("/api/upload", {
+    const res = await fetch(`${API_BASE}/upload`, {
       method: "POST",
       body: formData,
     });
