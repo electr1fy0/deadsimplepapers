@@ -89,8 +89,8 @@ function renderPapers() {
   const filters = getActiveFilters();
   const filtered = allPapers.filter((paper) => {
     const typeMatch =
-      filters.type.length === 0 ||
-      filters.type.includes(paper.exam_type.toLowerCase());
+      filters.exam_type.length === 0 ||
+      filters.exam_type.includes(paper.exam_type.toLowerCase());
     const yearMatch =
       filters.semester_name.length === 0 ||
       filters.semester_name.includes(paper.semester_name);
@@ -152,7 +152,7 @@ function createPaperListItem(paper, index) {
         <span class="paper-code">${paper.course_code || "—"}</span>
         <div class="paper-tags">
             <span class="paper-tag">${paper.slot.toUpperCase()}</span>
-            <span class="paper-tag paper-tag-exam">${paper.type.toUpperCase()}</span>
+            <span class="paper-tag paper-tag-exam">${paper.exam_type.toUpperCase()}</span>
             <span class="paper-tag">${formatYear(paper.semester_name)}</span>
         </div>
         <a href="${API_BASE}/download?filename=${encodeURIComponent(paper.filename)}" download class="download-btn" title="Download" onclick="event.stopPropagation()">
@@ -200,9 +200,9 @@ function initializeFilters() {
 }
 
 function getActiveFilters() {
-  const filters = { type: [], semester_name: [], slot: [] };
+  const filters = { exam_type: [], semester_name: [], slot: [] };
   document.querySelectorAll(".chip input:checked").forEach((input) => {
-    if (input.name === "type") filters.type.push(input.value);
+    if (input.name === "exam_type") filters.exam_type.push(input.value);
     if (input.name === "semester_name") filters.semester_name.push(input.value);
     if (input.name === "slot") filters.slot.push(input.value.toLowerCase());
   });
@@ -230,8 +230,8 @@ function updateFilterCounts() {
   ["2026", "2025", "2024", "2023", "2022"].forEach((year) => {
     const count = countMatches((p) => {
       const typeMatch =
-        active.type.length === 0 ||
-        active.type.includes(p.exam_type.toLowerCase());
+        active.exam_type.length === 0 ||
+        active.exam_type.includes(p.exam_type.toLowerCase());
       const slotMatch =
         active.slot.length === 0 || active.slot.includes(p.slot.toLowerCase());
       return p.semester_name === year && typeMatch && slotMatch;
@@ -258,8 +258,8 @@ function updateFilterCounts() {
   ].forEach((slot) => {
     const count = countMatches((p) => {
       const typeMatch =
-        active.type.length === 0 ||
-        active.type.includes(p.exam_type.toLowerCase());
+        active.exam_type.length === 0 ||
+        active.exam_type.includes(p.exam_type.toLowerCase());
       const yearMatch =
         active.semester_name.length === 0 ||
         active.semester_name.includes(p.semester_name);
