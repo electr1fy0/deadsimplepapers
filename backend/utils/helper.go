@@ -17,7 +17,6 @@ const (
 	uploadTimeout          = 60 * time.Second
 	downloadRequestTimeout = 10 * time.Second
 	papersRequestTimeout   = 10 * time.Second
-
 	signedURLExpirySeconds = 3600
 )
 
@@ -36,31 +35,6 @@ func SendError(w http.ResponseWriter, message string, status int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(ErrorResponse{Success: false, Error: message})
-}
-
-type paperMetadata struct {
-	Course       string
-	Code         string
-	SemesterName string
-	ExamType     string
-	Slot         string
-}
-
-func ExtractMetadata(r *http.Request) paperMetadata {
-	return paperMetadata{
-		Course:       strings.TrimSpace(r.FormValue("course")),
-		Code:         strings.TrimSpace(r.FormValue("course_code")),
-		SemesterName: strings.TrimSpace(r.FormValue("semester_name")),
-		ExamType:     strings.TrimSpace(r.FormValue("type")),
-		Slot:         strings.TrimSpace(r.FormValue("slot")),
-	}
-}
-
-func (m paperMetadata) Validate() error {
-	if m.Course == "" {
-		return fmt.Errorf("course name is required")
-	}
-	return nil
 }
 
 func UploadToStorage(config SupabaseConfig, filename string, data []byte) error {
@@ -93,15 +67,15 @@ func UploadToStorage(config SupabaseConfig, filename string, data []byte) error 
 func SaveToDatabase(config SupabaseConfig, meta paperMetadata, filename string) error {
 	url := fmt.Sprintf("%s/rest/v1/papers", config.URL)
 
-	payload := map[string]interface{}{
-		"course_title":      meta.Course,
-		"course_code":       meta.Code,
-		"semester_name":     meta.SemesterName,
-		"type":              meta.ExamType,
-		"slot":              meta.Slot,
-		"filename":          filename,
-		"is_valid":          false,
-		"validation_reason": "Pending manual review",
+	payload := map[string]any{
+		"course_title":  meta.CourseTitle,
+		"course_code":   meta.CourseCode,
+		"semester_name": meta.SemesterName,
+		"year":          meta.Year,
+		"exam_type":     meta.ExamType,
+		"slot":          meta.Slot,
+		"filename":      filename,
+		"is_valid":      false,
 	}
 
 	jsonData, _ := json.Marshal(payload)

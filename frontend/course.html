@@ -48,7 +48,7 @@
         </button>
     </header>
 
-    <!-- Upload Dialog -->
+    <!-- Upload dialog -->
     <dialog id="upload-dialog">
         <span class="upload-guide">Contribute a paper and help the community. PDFs and Images are accepted.<br />
             Your uploads will be analyzed before being shown here.
@@ -57,12 +57,13 @@
         <form id="upload-form">
             <div class="form-row">
                 <div class="form-group" style="flex: 2">
-                    <label for="course-name">Course Name</label>
-                    <input type="text" id="course-name" name="course" placeholder="e.g. Database Systems" required />
+                    <label for="course-name">Course Title</label>
+                    <input type="text" id="course-name" name="course_title" placeholder="e.g. Database Systems"
+                        required />
                 </div>
                 <div class="form-group" style="flex: 1">
                     <label for="course-code">Code</label>
-                    <input type="text" id="course-code" name="code" placeholder="e.g BCSE302L" />
+                    <input type="text" id="course-code" name="course_code" placeholder="e.g BCSE302L" />
                 </div>
             </div>
 
@@ -95,7 +96,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="exam-type">Exam</label>
-                    <select id="exam-type" name="type">
+                    <select id="exam-type" name="exam_type">
                         <option value="" selected>Select Exam</option>
                         <option value="cat1">CAT 1</option>
                         <option value="cat2">CAT 2</option>
