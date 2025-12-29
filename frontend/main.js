@@ -1,5 +1,5 @@
 const API_BASE = window.APP_CONFIG.API_BASE;
-
+let itemCount = 0;
 document.addEventListener("DOMContentLoaded", () => {
   initializeTheme();
   initializeCourseList();
@@ -74,7 +74,8 @@ function renderCourses(courses) {
 
   list.innerHTML = "";
   courses.forEach((course) => {
-    list.appendChild(createCourseListItem(course));
+    if (itemCount < 5) list.appendChild(createCourseListItem(course));
+    itemCount++;
   });
 }
 
