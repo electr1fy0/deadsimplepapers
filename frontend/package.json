@@ -4,7 +4,7 @@
   "scripts": {
     "build": "npx tsc",
     "watch": "npx tsc --watch",
-    "dev": "npm run build && npx serve dist"
+    "dev": "npm run build "
   },
   "devDependencies": {
     "typescript": "^5.9.3"
