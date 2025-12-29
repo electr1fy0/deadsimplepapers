@@ -221,7 +221,7 @@ type paperMetadata struct {
 func extractMetadata(r *http.Request) paperMetadata {
 	return paperMetadata{
 		Course:       strings.TrimSpace(r.FormValue("course")),
-		Code:         strings.TrimSpace(r.FormValue("code")),
+		Code:         strings.TrimSpace(r.FormValue("course_code")),
 		SemesterName: strings.TrimSpace(r.FormValue("semester_name")),
 		ExamType:     strings.TrimSpace(r.FormValue("type")),
 		Slot:         strings.TrimSpace(r.FormValue("slot")),

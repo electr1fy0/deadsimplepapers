@@ -295,6 +295,7 @@ function initializeCommandPalette() {
   const close = () => dialog.close();
 
   const renderResults = (query = "") => {
+    let courseCount = 0;
     resultsContainer.innerHTML = "";
     const filtered = query
       ? courses.filter(
@@ -306,7 +307,8 @@ function initializeCommandPalette() {
       : courses;
 
     filtered.forEach((course) => {
-      resultsContainer.appendChild(createCmdKItem(course));
+      if (courseCount < 5) resultsContainer.appendChild(createCmdKItem(course));
+      courseCount++;
     });
   };
 

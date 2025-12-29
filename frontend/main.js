@@ -1,5 +1,4 @@
 const API_BASE = window.APP_CONFIG.API_BASE;
-let itemCount = 0;
 document.addEventListener("DOMContentLoaded", () => {
   initializeTheme();
   initializeCourseList();
@@ -69,6 +68,7 @@ function handleSearch(e) {
 }
 
 function renderCourses(courses) {
+  let itemCount = 0;
   const list = document.getElementById("matched-courses");
   if (!list) return;
 
