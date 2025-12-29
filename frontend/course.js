@@ -221,7 +221,7 @@ function updateFilterCounts() {
         active.semester_name.includes(p.semester_name);
       const slotMatch =
         active.slot.length === 0 || active.slot.includes(p.slot.toLowerCase());
-      return p.type.toLowerCase() === type && yearMatch && slotMatch;
+      return p.exam_type.toLowerCase() === type && yearMatch && slotMatch;
     });
     const el = document.getElementById(`count-${type}`);
     if (el) el.textContent = count;
@@ -230,7 +230,8 @@ function updateFilterCounts() {
   ["2026", "2025", "2024", "2023", "2022"].forEach((year) => {
     const count = countMatches((p) => {
       const typeMatch =
-        active.type.length === 0 || active.type.includes(p.type.toLowerCase());
+        active.type.length === 0 ||
+        active.type.includes(p.exam_type.toLowerCase());
       const slotMatch =
         active.slot.length === 0 || active.slot.includes(p.slot.toLowerCase());
       return p.semester_name === year && typeMatch && slotMatch;
@@ -257,7 +258,8 @@ function updateFilterCounts() {
   ].forEach((slot) => {
     const count = countMatches((p) => {
       const typeMatch =
-        active.type.length === 0 || active.type.includes(p.type.toLowerCase());
+        active.type.length === 0 ||
+        active.type.includes(p.exam_type.toLowerCase());
       const yearMatch =
         active.semester_name.length === 0 ||
         active.semester_name.includes(p.semester_name);
