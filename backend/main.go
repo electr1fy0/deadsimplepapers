@@ -17,6 +17,7 @@ import (
 
 const (
 	coursesRequestTimeout = 10 * time.Second
+	origin                = "https://deadsimplepapers.vercel.app"
 )
 
 type CourseInfo struct {
@@ -105,7 +106,7 @@ func fetchCourses(config supabaseConfig) ([]CourseInfo, error) {
 }
 
 func courseHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", origin)
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 
@@ -153,6 +154,8 @@ func sendError(w http.ResponseWriter, message string, status int) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", origin)
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 	if err := r.ParseMultipartForm(maxFileSize); err != nil {
 		sendError(w, "File too large or invalid format", http.StatusBadRequest)
 		return
@@ -305,7 +308,7 @@ const (
 )
 
 func papersHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", origin)
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 
@@ -386,6 +389,9 @@ const (
 )
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", origin)
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 	filename := r.URL.Query().Get("filename")
 	if filename == "" {
 		http.Error(w, "Missing filename parameter", http.StatusBadRequest)
@@ -452,8 +458,10 @@ func getSignedURL(config supabaseConfig, filename string) (string, error) {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8080"
+		port = "8080"
 	}
+
+	addr := ":" + port
 	r := http.NewServeMux()
 	r.HandleFunc("OPTIONS /courses", courseHandler)
 	r.HandleFunc("OPTIONS /papers", papersHandler)
@@ -464,6 +472,6 @@ func main() {
 	r.HandleFunc("POST /upload", uploadHandler)
 
 	fmt.Printf("Starting server on :%s\n", port)
-	log.Fatal(http.ListenAndServe(port, r))
+	log.Fatal(http.ListenAndServe(addr, r))
 
 }
