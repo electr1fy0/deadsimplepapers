@@ -1,5 +1,5 @@
 .vercel
 handlers/
 node_modules/
-dist/js/*
+frontend/dist/js/*
 .env*.local
