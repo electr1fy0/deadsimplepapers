@@ -8,7 +8,7 @@ var allowedOrigins = map[string]bool{
 	"https://papers.ayushpandey.xyz":      true,
 	"https://vitpapers.vercel.app":        true,
 	"https://deadsimplepapers.vercel.app": true,
-	// "http://localhost:3000":               true,
+	"http://localhost:3000":               true,
 }
 
 func CORSMiddleware(next http.Handler) http.Handler {

@@ -1,7 +1,5 @@
 {
-  "include": [
-    "./src/**/*"
-  ],
+  "include": ["./src/**/*"],
   "compilerOptions": {
     "outDir": "dist/js",
     "rootDir": "src",
@@ -16,10 +14,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ]
-  }
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+  },
 }
