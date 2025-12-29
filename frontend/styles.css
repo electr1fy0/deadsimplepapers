@@ -415,3 +415,14 @@ dialog {
     flex-shrink: 0;
     margin-right: 4px;
 }
+
+@media (max-width: 600px) {
+    main {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    header {
+        margin-right: 16px;
+    }
+}
