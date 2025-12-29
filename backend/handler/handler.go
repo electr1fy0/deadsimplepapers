@@ -12,14 +12,9 @@ import (
 
 const (
 	maxFileSize = 10 << 20
-	origin      = "https://deadsimplepapers.vercel.app"
 )
 
 func CourseHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", origin)
-	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
-
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -42,9 +37,6 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PapersHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", origin)
-	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusNoContent)
@@ -69,9 +61,6 @@ func PapersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DownloadHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", origin)
-	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 	filename := r.URL.Query().Get("filename")
 	if filename == "" {
 		http.Error(w, "Missing filename parameter", http.StatusBadRequest)
@@ -94,8 +83,6 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", origin)
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey")
 	if err := r.ParseMultipartForm(maxFileSize); err != nil {
 		utils.SendError(w, "File too large or invalid format", http.StatusBadRequest)
 		return
