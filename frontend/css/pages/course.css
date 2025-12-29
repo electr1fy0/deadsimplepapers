@@ -3,14 +3,14 @@ header {
     gap: 8px;
 }
 
-main {
+.main-ui {
     padding-top: 80px;
     padding-bottom: 40px;
     padding-left: 16px;
     padding-right: 16px;
 }
 
-.back-link {
+#back-link {
     display: inline-block;
     font-size: 13px;
     color: var(--text-secondary);

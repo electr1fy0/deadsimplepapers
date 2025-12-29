@@ -1,35 +1,12 @@
+import { renderDialog } from "../components/dialog.js";
+import { navigate } from "../core/router.js";
+import { initializeTheme } from "../state/theme.js";
+
 const API_BASE = window.APP_CONFIG.API_BASE;
-document.addEventListener("DOMContentLoaded", () => {
-  initializeTheme();
-  initializeCourseList();
-  initializeUploadDialog();
-});
-
-function initializeTheme() {
-  const currentTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-  const toggleBtn = document.getElementById("theme-toggle");
-
-  if (currentTheme === "dark" || (!currentTheme && prefersDark.matches)) {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-      const newTheme = document.body.classList.contains("dark-mode")
-        ? "dark"
-        : "light";
-      localStorage.setItem("theme", newTheme);
-    });
-  }
-}
 
 let allCourses = [];
 
-async function initializeCourseList() {
+export async function initializeCourseList() {
   const searchInput = document.getElementById("search-bar");
 
   await fetchCourses();
@@ -84,7 +61,7 @@ function createCourseListItem(course) {
   li.style.cursor = "pointer";
 
   li.onclick = () => {
-    window.location.href = `./course.html?course_title=${encodeURIComponent(course.course_title)}`;
+    navigate(`/course?course_title=${encodeURIComponent(course.course_title)}`);
   };
 
   const codeTag = course.course_code
@@ -108,7 +85,7 @@ function createCourseListItem(course) {
   return li;
 }
 
-function initializeUploadDialog() {
+export function initializeUploadDialog() {
   const triggerBtn = document.getElementById("upload-btn");
   const dialog = document.getElementById("upload-dialog");
   const form = document.getElementById("upload-form");
@@ -184,4 +161,66 @@ async function handleUpload(e, form, closeCallback) {
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
   }
+}
+
+let cleanup = null;
+
+export function renderHome() {
+  const app = document.getElementById("app");
+  if (cleanup) cleanup();
+
+  app.innerHTML = `
+
+    <header>
+              <!-- File Upload button -->
+              <button type="button" id="upload-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
+                      <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" </svg>
+                          <span>Submit</span>
+              </button>
+              <!-- Dark Mode toggle -->
+              <button type="button" id="theme-toggle" title="Toggle theme">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      class="sun-icon">
+                      <circle cx="12" cy="12" r="4" />
+                      <path
+                          d="M12 2V4M12 20V22M4 12H2M22 12H20M19.778 4.222L17.556 6.444M6.444 17.556L4.222 19.778M4.222 4.222L6.444 6.444M17.556 17.556L19.778 19.778" />
+                  </svg>
+              </button>
+          </header>
+
+          <!-- Upload dialog -->
+          <dialog id="upload-dialog">
+
+          </dialog>
+          <div class="main-ui">
+              <h1>Dead Simple Papers</h1>
+              <h2>VIT Previous Year Papers without the noise.</h2>
+              <div id="search-area">
+                  <form action="/search">
+                      <fieldset>
+                          <!-- Search Bar -->
+                          <div class="search-bar-container">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                  fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                  stroke-linejoin="round">
+                                  <path d="M17.5 17.5L22 22" />
+                                  <path
+                                      d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+                              </svg>
+                              <input type="text" name="course" placeholder="Search courses..." id="search-bar" />
+                          </div>
+                      </fieldset>
+                  </form>
+                  <ol id="matched-courses"></ol>
+              </div>
+          </div>`;
+
+  initializeCourseList();
+  initializeUploadDialog();
+  renderDialog();
+  initializeTheme();
 }

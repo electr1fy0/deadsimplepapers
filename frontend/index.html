@@ -10,126 +10,17 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/pages/course.css" />
+
     <link rel="icon" href="./papers.svg">
     <script src="config.js" defer>
     </script>
-    <script src="main.js" defer></script>
+    <script src="/js/main.js" type="module" defer></script>
 </head>
 
 <body>
-    <header>
-        <!-- File Upload button -->
-        <button type="button" id="upload-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
-                <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" </svg>
-                    <span>Submit</span>
-        </button>
-        <!-- Dark Mode toggle -->
-        <button type="button" id="theme-toggle" title="Toggle theme">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                class="sun-icon">
-                <circle cx="12" cy="12" r="4" />
-                <path
-                    d="M12 2V4M12 20V22M4 12H2M22 12H20M19.778 4.222L17.556 6.444M6.444 17.556L4.222 19.778M4.222 4.222L6.444 6.444M17.556 17.556L19.778 19.778" />
-            </svg>
-        </button>
-    </header>
-
-    <!-- Upload dialog -->
-    <dialog id="upload-dialog">
-        <span class="upload-guide">Contribute a paper and help the community. PDFs and Images are accepted.<br />
-            Your uploads will be analyzed before being shown here.
-        </span>
-
-        <form id="upload-form">
-            <div class="form-row">
-                <div class="form-group" style="flex: 2">
-                    <label for="course-name">Course Title</label>
-                    <input type="text" id="course-name" name="course_title" placeholder="e.g. Database Systems"
-                        required />
-                </div>
-                <div class="form-group" style="flex: 1">
-                    <label for="course-code">Code</label>
-                    <input type="text" id="course-code" name="course_code" placeholder="e.g BCSE302L" />
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="year">Year</label>
-                    <select id="year" name="year">
-                        <option value="" selected>Select Year</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                    </select>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="semester_name">Semester</label>
-                    <select id="semester_name" name="semester_name">
-                        <option value="" selected>Select Semester</option>
-                        <option value="Fallsem">Fall</option>
-                        <option value="Wintersem">Winter</option>
-                        <option value="Summersem">Summer</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="exam-type">Exam</label>
-                    <select id="exam-type" name="exam_type">
-                        <option value="" selected>Select Exam</option>
-                        <option value="cat1">CAT 1</option>
-                        <option value="cat2">CAT 2</option>
-                        <option value="fat">FAT</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="slot">Slot</label>
-                    <input type="text" id="slot" name="slot" placeholder="e.g. A1" />
-                </div>
-            </div>
-
-            <input type="file" id="file" name="file" hidden required />
-            <label for="file" class="file-trigger">Select a file</label>
-            <span class="fileName"></span>
-
-            <menu>
-                <button type="button" class="cancel-btn">Cancel</button>
-                <button class="confirm-btn">Upload</button>
-            </menu>
-        </form>
-    </dialog>
-    <main>
-        <h1>Dead Simple Papers</h1>
-        <h2>VIT Previous Year Papers without the noise.</h2>
-        <div id="search-area">
-            <form action="/search">
-                <fieldset>
-                    <!-- Search Bar -->
-                    <div class="search-bar-container">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17.5 17.5L22 22" />
-                            <path
-                                d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
-                        </svg>
-                        <input type="text" name="course" placeholder="Search courses..." id="search-bar" />
-                    </div>
-                </fieldset>
-            </form>
-            <ol id="matched-courses"></ol>
-        </div>
+    <main id="app">
     </main>
 </body>
 

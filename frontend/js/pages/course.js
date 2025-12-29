@@ -1,33 +1,8 @@
+import { navigate } from "../core/router.js";
+import { initializeTheme } from "../state/theme.js";
+import { renderDialog } from "../components/dialog.js";
+
 const API_BASE = window.APP_CONFIG.API_BASE;
-
-document.addEventListener("DOMContentLoaded", () => {
-  initializeTheme();
-  initializePapers();
-  initializeCommandPalette();
-  initializeUploadDialog();
-});
-
-function initializeTheme() {
-  const currentTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-  const toggleBtn = document.getElementById("theme-toggle");
-
-  if (currentTheme === "dark" || (!currentTheme && prefersDark.matches)) {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-      const newTheme = document.body.classList.contains("dark-mode")
-        ? "dark"
-        : "light";
-      localStorage.setItem("theme", newTheme);
-    });
-  }
-}
 
 function formatYear(year) {
   const y = parseInt(year, 10);
@@ -318,7 +293,9 @@ function initializeCommandPalette() {
     const li = document.createElement("li");
     li.style.cursor = "pointer";
     li.onclick = () =>
-      (window.location.href = `/course.html?course_title=${encodeURIComponent(course.course_title)}`);
+      navigate(
+        `/course?course_title=${encodeURIComponent(course.course_title)}`,
+      );
 
     const codeTag = course.course_code
       ? `<span class="course-code">${course.course_code}</span>`
@@ -430,4 +407,161 @@ function initializeUploadDialog() {
       }
     });
   }
+}
+
+export function renderCourse() {
+  app = document.getElementById("app");
+
+  app.innerHTML = `
+    <header>
+        <button type="button" id="upload-btn">
+            <!-- File Upload -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
+                <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" />
+            </svg>
+            <span>Submit</span>
+        </button>
+        <button type="button" id="search-btn">
+            <!-- Search -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.5 17.5L22 22" />
+                <path
+                    d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+            </svg>
+            <span id="cmd-icon">Search</span>
+        </button>
+        <!-- Dark Mode -->
+        <button type="button" id="theme-toggle" title="Toggle theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                    d="M12 2V4M12 20V22M4 12H2M22 12H20M19.778 4.222L17.556 6.444M6.444 17.556L4.222 19.778M4.222 4.222L6.444 6.444M17.556 17.556L19.778 19.778" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Upload dialog -->
+    <dialog id="upload-dialog">
+
+    </dialog>
+
+    <!-- Command Palette -->
+    <dialog id="cmd-k-dialog">
+        <div id="search-area">
+            <form action="/search">
+                <fieldset>
+                    <div class="search-bar-container">
+                        <!-- Search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.5 17.5L22 22" />
+                            <path
+                                d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z" />
+                        </svg>
+                        <input type="text" name="course" placeholder="Search courses..." id="cmd-k-input" />
+                    </div>
+                </fieldset>
+            </form>
+            <ol id="cmd-k-results"></ol>
+        </div>
+    </dialog>
+
+    <div class="main-ui">
+        <a href="/" id="back-link">← Back</a>
+        <h1 id="course-title">Loading...</h1>
+        <h2 id="course-subtitle">Dead Simple Papers</h2>
+
+        <!-- Filters Section -->
+        <div class="filters">
+            <div class="filter-row">
+                <span class="filter-label">Type</span>
+                <div class="filter-chips">
+                    <label class="chip"><input type="checkbox" name="exam_type" value="cat1" /><span>CAT 1 <small
+                                id="count-cat1">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="exam_type" value="cat2" /><span>CAT 2 <small
+                                id="count-cat2">0</small></span></label>
+
+                    <label class="chip"><input type="checkbox" name="exam_type" value="fat" /><span>FAT <small
+                                id="count-fat">0</small></span></label>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Semester</span>
+                <div class="filter-chips">
+                    <label class="chip">
+                        <input type="checkbox" name="semester_name" value="2026" /><span>2026-27
+                            <small id="count-2026">0</small></span></label>
+                    <label class="chip">
+                        <input type="checkbox" name="semester_name" value="2025" /><span>2025-26
+                            <small id="count-2025">0</small></span></label>
+
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
+                                id="count-2024">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
+                                id="count-2024">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2023" /><span>2023-24 <small
+                                id="count-2023">0</small></span></label>
+                    <label class="chip"><input type="checkbox" name="semester_name" value="2022" /><span>2022-23 <small
+                                id="count-2022">0</small></span></label>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Slot</span>
+                <div class="filter-chips filter-chips-wrap">
+                    <label class="chip chip-sm">
+                        <input type="checkbox" name="slot" value="a1" />
+                        <span>A1 <small id="count-a1">0</small></span>
+                    </label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="a2" /><span>A2 <small
+                                id="count-a2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="b1" /><span>B1 <small
+                                id="count-b1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="b2" /><span>B2 <small
+                                id="count-b2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="c1" /><span>C1 <small
+                                id="count-c1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="c2" /><span>C2 <small
+                                id="count-c2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="d1" /><span>D1 <small
+                                id="count-d1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="d2" /><span>D2 <small
+                                id="count-d2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="e1" /><span>E1 <small
+                                id="count-e1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="e2" /><span>E2 <small
+                                id="count-e2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="f1" /><span>F1 <small
+                                id="count-f1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="f2" /><span>F2 <small
+                                id="count-f2">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="g1" /><span>G1 <small
+                                id="count-g1">0</small></span></label>
+                    <label class="chip chip-sm"><input type="checkbox" name="slot" value="g2" /><span>G2 <small
+                                id="count-g2">0</small></span></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Papers List -->
+        <ol id="papers-list"></ol>
+        </div>
+    `;
+
+  const backLink = document.querySelector("#backlink");
+  if (backLink) {
+    backLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      navigate("/");
+    });
+  }
+
+  initializePapers();
+  initializeCommandPalette();
+  initializeUploadDialog();
+  renderDialog();
+  initializeTheme();
 }
