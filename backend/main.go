@@ -455,7 +455,9 @@ func main() {
 		port = ":8080"
 	}
 	r := http.NewServeMux()
-
+	r.HandleFunc("OPTIONS /courses", courseHandler)
+	r.HandleFunc("OPTIONS /papers", papersHandler)
+	r.HandleFunc("OPTIONS /upload", uploadHandler)
 	r.HandleFunc("GET /courses", courseHandler)
 	r.HandleFunc("GET /download", downloadHandler)
 	r.HandleFunc("GET /papers", papersHandler)
