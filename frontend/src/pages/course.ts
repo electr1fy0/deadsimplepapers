@@ -2,16 +2,36 @@ import { navigate } from "../core/router.js";
 import { renderDialog } from "../components/dialog.js";
 import { API_BASE } from "../core/config.js";
 
-function formatYear(year) {
+interface Paper {
+  filename: string;
+  course_code: string;
+  slot: string;
+  exam_type: string;
+  semester_name: string;
+}
+
+interface Course {
+  course_title: string;
+  course_code?: string;
+  paper_count: number;
+}
+
+interface Filters {
+  exam_type: string[];
+  semester_name: string[];
+  slot: string[];
+}
+
+function formatYear(year: string): string {
   const y = parseInt(year, 10);
   if (isNaN(y)) return year;
   return `${y}-${String(y + 1).slice(-2)}`;
 }
 
-let allPapers = [];
+let allPapers: Paper[] = [];
 let currentCourseCode = "";
 
-async function initializePapers() {
+async function initializePapers(): Promise<void> {
   const urlParams = new URLSearchParams(window.location.search);
   const courseQuery = urlParams.get("course_title");
   const courseTitle = document.getElementById("course-title");
@@ -27,7 +47,7 @@ async function initializePapers() {
   initializeFilters();
 }
 
-async function fetchPapers(course = "") {
+async function fetchPapers(course = ""): Promise<void> {
   const courseSubtitle = document.getElementById("course-subtitle");
   const papersList = document.getElementById("papers-list");
 
@@ -55,7 +75,7 @@ async function fetchPapers(course = "") {
   }
 }
 
-function renderPapers() {
+function renderPapers(): void {
   const papersList = document.getElementById("papers-list");
   if (!papersList) return;
 
@@ -79,15 +99,15 @@ function renderPapers() {
   });
 }
 
-function getDonePapers() {
+function getDonePapers(): string[] {
   try {
-    return JSON.parse(localStorage.getItem("vitpapers_done")) || [];
+    return JSON.parse(localStorage.getItem("vitpapers_done") || "[]");
   } catch {
     return [];
   }
 }
 
-function togglePaperDone(filename) {
+function togglePaperDone(filename: string): boolean {
   const done = getDonePapers();
   const index = done.indexOf(filename);
   if (index === -1) {
@@ -99,7 +119,7 @@ function togglePaperDone(filename) {
   return index === -1;
 }
 
-function createPaperListItem(paper, index) {
+function createPaperListItem(paper: Paper, index: number): HTMLLIElement {
   const li = document.createElement("li");
   li.style.animationDelay = `${index * 30}ms`;
   li.style.cursor = "pointer";
@@ -137,31 +157,31 @@ function createPaperListItem(paper, index) {
     `;
 
   const toggleBtn = li.querySelector(".checkbox-wrapper");
-  toggleBtn.addEventListener("click", () => {
-    const newState = togglePaperDone(paper.filename);
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const newState = togglePaperDone(paper.filename);
 
-    if (newState) {
-      li.classList.add("done");
-      toggleBtn.innerHTML = checkIcon;
-      toggleBtn.title = "Mark as undone";
-    } else {
-      li.classList.remove("done");
-      toggleBtn.innerHTML = circleIcon;
-      toggleBtn.title = "Mark as done";
-    }
-  });
+      if (newState) {
+        li.classList.add("done");
+        toggleBtn.innerHTML = checkIcon;
+      } else {
+        li.classList.remove("done");
+        toggleBtn.innerHTML = circleIcon;
+      }
+    });
+  }
 
   li.onclick = () => {
     window.open(
       `${API_BASE}/download?filename=${encodeURIComponent(paper.filename)}`,
-      "_blank",
+      "_blank"
     );
   };
 
   return li;
 }
 
-function initializeFilters() {
+function initializeFilters(): void {
   const filterInputs = document.querySelectorAll(".chip input");
 
   filterInputs.forEach((input) => {
@@ -172,20 +192,24 @@ function initializeFilters() {
   });
 }
 
-function getActiveFilters() {
-  const filters = { exam_type: [], semester_name: [], slot: [] };
-  document.querySelectorAll(".chip input:checked").forEach((input) => {
-    if (input.name === "exam_type") filters.exam_type.push(input.value);
-    if (input.name === "semester_name") filters.semester_name.push(input.value);
-    if (input.name === "slot") filters.slot.push(input.value.toLowerCase());
-  });
+function getActiveFilters(): Filters {
+  const filters: Filters = { exam_type: [], semester_name: [], slot: [] };
+  document
+    .querySelectorAll<HTMLInputElement>(".chip input:checked")
+    .forEach((input) => {
+      if (input.name === "exam_type") filters.exam_type.push(input.value);
+      if (input.name === "semester_name")
+        filters.semester_name.push(input.value);
+      if (input.name === "slot") filters.slot.push(input.value.toLowerCase());
+    });
   return filters;
 }
 
-function updateFilterCounts() {
+function updateFilterCounts(): void {
   const active = getActiveFilters();
 
-  const countMatches = (predicate) => allPapers.filter(predicate).length;
+  const countMatches = (predicate: (p: Paper) => boolean) =>
+    allPapers.filter(predicate).length;
 
   ["fat", "cat2", "cat1"].forEach((type) => {
     const count = countMatches((p) => {
@@ -197,7 +221,7 @@ function updateFilterCounts() {
       return p.exam_type.toLowerCase() === type && yearMatch && slotMatch;
     });
     const el = document.getElementById(`count-${type}`);
-    if (el) el.textContent = count;
+    if (el) el.textContent = count.toString();
   });
 
   ["2026", "2025", "2024", "2023", "2022"].forEach((year) => {
@@ -210,24 +234,12 @@ function updateFilterCounts() {
       return p.semester_name === year && typeMatch && slotMatch;
     });
     const el = document.getElementById(`count-${year}`);
-    if (el) el.textContent = count;
+    if (el) el.textContent = count.toString();
   });
 
   [
-    "a1",
-    "a2",
-    "b1",
-    "b2",
-    "c1",
-    "c2",
-    "d1",
-    "d2",
-    "e1",
-    "e2",
-    "f1",
-    "f2",
-    "g1",
-    "g2",
+    "a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2",
+    "e1", "e2", "f1", "f2", "g1", "g2"
   ].forEach((slot) => {
     const count = countMatches((p) => {
       const typeMatch =
@@ -239,19 +251,19 @@ function updateFilterCounts() {
       return p.slot.toLowerCase() === slot && typeMatch && yearMatch;
     });
     const el = document.getElementById(`count-${slot}`);
-    if (el) el.textContent = count;
+    if (el) el.textContent = count.toString();
   });
 }
 
-function initializeCommandPalette() {
-  const dialog = document.getElementById("cmd-k-dialog");
-  const input = document.getElementById("cmd-k-input");
+function initializeCommandPalette(): void {
+  const dialog = document.getElementById("cmd-k-dialog") as HTMLDialogElement | null;
+  const input = document.getElementById("cmd-k-input") as HTMLInputElement | null;
   const resultsContainer = document.getElementById("cmd-k-results");
   const triggerBtn = document.getElementById("search-btn");
 
-  if (!dialog) return;
+  if (!dialog || !input || !resultsContainer) return;
 
-  let courses = [];
+  let courses: Course[] = [];
 
   fetch(`${API_BASE}/courses`)
     .then((res) => res.json())
@@ -277,7 +289,7 @@ function initializeCommandPalette() {
         (c) =>
           c.course_title.toLowerCase().includes(query.toLowerCase()) ||
           (c.course_code &&
-            c.course_code.toLowerCase().includes(query.toLowerCase())),
+            c.course_code.toLowerCase().includes(query.toLowerCase()))
       )
       : courses;
 
@@ -287,12 +299,12 @@ function initializeCommandPalette() {
     });
   };
 
-  const createCmdKItem = (course) => {
+  const createCmdKItem = (course: Course): HTMLLIElement => {
     const li = document.createElement("li");
     li.style.cursor = "pointer";
     li.onclick = () =>
       navigate(
-        `/course?course_title=${encodeURIComponent(course.course_title)}`,
+        `/course?course_title=${encodeURIComponent(course.course_title)}`
       );
 
     const codeTag = course.course_code
@@ -317,7 +329,10 @@ function initializeCommandPalette() {
 
   if (triggerBtn) triggerBtn.addEventListener("click", open);
 
-  input.addEventListener("input", (e) => renderResults(e.target.value));
+  input.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    renderResults(target.value);
+  });
 
   document.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -334,11 +349,11 @@ function initializeCommandPalette() {
   });
 }
 
-function initializeUploadDialog() {
+function initializeUploadDialog(): void {
   const triggerBtn = document.getElementById("upload-btn");
-  const dialog = document.getElementById("upload-dialog");
-  const form = document.getElementById("upload-form");
-  const fileInput = document.getElementById("file");
+  const dialog = document.getElementById("upload-dialog") as HTMLDialogElement | null;
+  const form = document.getElementById("upload-form") as HTMLFormElement | null;
+  const fileInput = document.getElementById("file") as HTMLInputElement | null;
   const fileNameDisplay = document.querySelector(".fileName");
   const cancelBtn = document.querySelector(".cancel-btn");
 
@@ -363,14 +378,14 @@ function initializeUploadDialog() {
   if (fileInput && fileNameDisplay) {
     fileInput.addEventListener("change", () => {
       fileNameDisplay.textContent =
-        fileInput.files.length > 0 ? fileInput.files[0].name : "";
+        fileInput.files && fileInput.files.length > 0 ? fileInput.files[0].name : "";
     });
   }
 
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const submitBtn = form.querySelector(".confirm-btn");
+      const submitBtn = form.querySelector(".confirm-btn") as HTMLButtonElement;
       const originalText = submitBtn.textContent;
       const formData = new FormData(form);
 
@@ -384,7 +399,7 @@ function initializeUploadDialog() {
         });
 
         const text = await res.text();
-        let data;
+        let data: { message?: string } | null = null;
         try {
           data = JSON.parse(text);
         } catch { }
@@ -398,7 +413,7 @@ function initializeUploadDialog() {
           alert("Upload failed: " + (data?.message || text));
         }
       } catch (err) {
-        alert("Error: " + err.message);
+        alert("Error: " + (err as Error).message);
       } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -407,14 +422,14 @@ function initializeUploadDialog() {
   }
 }
 
-export function renderCourse() {
-  app = document.getElementById("app");
+export function renderCourse(): void {
+  const app = document.getElementById("app");
+  if (!app) return;
 
   app.innerHTML = `
     <div class="course-page">
     <header>
         <button type="button" id="upload-btn">
-            <!-- File Upload -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 14.5L12 4.5M12 4.5L15 7.5M12 4.5L9 7.5" />
@@ -423,7 +438,6 @@ export function renderCourse() {
             <span>Submit</span>
         </button>
         <button type="button" id="search-btn">
-            <!-- Search -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17.5 17.5L22 22" />
@@ -432,7 +446,6 @@ export function renderCourse() {
             </svg>
             <span id="cmd-icon">Search</span>
         </button>
-        <!-- Dark Mode -->
         <button type="button" id="theme-toggle" title="Toggle theme">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -443,18 +456,13 @@ export function renderCourse() {
         </button>
     </header>
 
-    <!-- Upload dialog -->
-    <dialog id="upload-dialog">
+    <dialog id="upload-dialog"></dialog>
 
-    </dialog>
-
-    <!-- Command Palette -->
     <dialog id="cmd-k-dialog">
         <div id="search-area">
             <form action="/search">
                 <fieldset>
                     <div class="search-bar-container">
-                        <!-- Search -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17.5 17.5L22 22" />
@@ -474,7 +482,6 @@ export function renderCourse() {
         <h1 id="course-title">Loading...</h1>
         <h2 id="course-subtitle">Dead Simple Papers</h2>
 
-        <!-- Filters Section -->
         <div class="filters">
             <div class="filter-row">
                 <span class="filter-label">Type</span>
@@ -483,7 +490,6 @@ export function renderCourse() {
                                 id="count-cat1">0</small></span></label>
                     <label class="chip"><input type="checkbox" name="exam_type" value="cat2" /><span>CAT 2 <small
                                 id="count-cat2">0</small></span></label>
-
                     <label class="chip"><input type="checkbox" name="exam_type" value="fat" /><span>FAT <small
                                 id="count-fat">0</small></span></label>
                 </div>
@@ -497,9 +503,6 @@ export function renderCourse() {
                     <label class="chip">
                         <input type="checkbox" name="semester_name" value="2025" /><span>2025-26
                             <small id="count-2025">0</small></span></label>
-
-                    <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
-                                id="count-2024">0</small></span></label>
                     <label class="chip"><input type="checkbox" name="semester_name" value="2024" /><span>2024-25 <small
                                 id="count-2024">0</small></span></label>
                     <label class="chip"><input type="checkbox" name="semester_name" value="2023" /><span>2023-24 <small
@@ -545,13 +548,12 @@ export function renderCourse() {
             </div>
         </div>
 
-        <!-- Papers List -->
         <ol id="papers-list"></ol>
         </div>
     </div>
     `;
 
-  const backLink = document.querySelector("#backlink");
+  const backLink = document.querySelector("#back-link");
   if (backLink) {
     backLink.addEventListener("click", (e) => {
       e.preventDefault();

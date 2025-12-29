@@ -1,0 +1,12 @@
+{
+  "name": "vitpapers-frontend",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "npm run build && npx serve dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

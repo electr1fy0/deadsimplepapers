@@ -2,19 +2,21 @@ import { renderHome } from "../pages/home.js";
 import { renderCourse } from "../pages/course.js";
 import { initializeTheme } from "../state/theme.js";
 
-const routes = {
+type RouteFunction = () => void;
+
+const routes: Record<string, RouteFunction> = {
   "/": renderHome,
   "/course": renderCourse,
 };
 
-export function navigate(path) {
+export function navigate(path: string): void {
   window.history.pushState({}, "", path);
   route();
 }
 
-export function route() {
-  const path = window.location.pathname;
-  const render = routes[path] || routes["/"];
+export function route(): void {
+  const path: string = window.location.pathname;
+  const render: RouteFunction = routes[path] || routes["/"];
   render();
   initializeTheme();
 }
