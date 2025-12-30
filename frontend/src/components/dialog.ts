@@ -1,8 +1,8 @@
 export function renderDialog(): void {
-    const uploadDialog: HTMLElement | null =
-        document.getElementById("upload-dialog");
+  const uploadDialog: HTMLElement | null =
+    document.getElementById("upload-dialog");
 
-    uploadDialog.innerHTML = `
+  uploadDialog.innerHTML = `
     <span class="upload-guide">
         Contribute a paper and help the community. PDFs and Images are accepted.<br />
         Your uploads will be analyzed before being shown here.

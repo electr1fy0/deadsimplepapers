@@ -1,11 +1,11 @@
 {
   "name": "vitpapers-frontend",
   "private": true,
-  "scripts": {
-    "build": "npx tsc",
-    "watch": "npx tsc --watch",
-    "dev": "npm run build "
-  },
+    "scripts": {
+      "build": "npx tsc",
+      "dev": "npx serve dist",
+      "watch": "npx tsc --watch"
+    },
   "devDependencies": {
     "typescript": "^5.9.3"
   }
